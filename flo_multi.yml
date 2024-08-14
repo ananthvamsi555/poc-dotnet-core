@@ -1,0 +1,45 @@
+schema_version: 1.0
+app:
+  code: 'poc-dotnet-core'
+  name: 'poc-dotnet-core'
+  version: 1.0
+build_tool:
+  name: dotnet
+  version: ^1
+  arguments: Release
+artifacts:  
+  poc-dotnet-core: .
+notification_users:
+  - sudharsan.seenivasan@chubb.com
+  - kavya.mallampalli@chubb.com
+release: 'build'
+pipeline:
+  - type: artifact_repo
+    name: nexus
+    template: pipeline_info
+    status: enabled
+  - type: continous_builder
+    name: jenkins
+    template: pipeline_info
+    status: enabled
+  - type: static_code_analyzer
+    name: sonarqube
+    template: pipeline_info
+    status: enabled
+multibranch_script_id : '82840e62-779d-4851-860b-a70064f28849' #Scalable-Jenkinsfile
+sandbox_enable : true 
+jenkins_extra_params:
+  override_slave_label: 'DOTNET8-AKS-LABEL'  #'.NETCore3.x-LABEL'     
+  pipeline_branch: DDOE-5031-Fix
+  props_branch: sit 
+  
+
+include_branches:
+  - FBTEST
+
+discover_strategy:
+  branches: 3
+  origin_pullrequests: 1
+  fork_pullrequests: 1 
+#18             
+    
